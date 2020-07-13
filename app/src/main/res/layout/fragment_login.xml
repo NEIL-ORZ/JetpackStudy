@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <!--布局中需要使用的对象-->
+        <variable
+            name="model"
+            type="com.neil.jetpackstudy.viewmodel.LoginModel" />
+
+        <!--布局中需要使用的类，可以直接使用被导入的类的静态方法-->
+        <variable
+            name="activity"
+            type="androidx.fragment.app.FragmentActivity" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.navigation.LoginFragment">
+
+        <!--绑定数据 @{model.n.get()}
+            绑定监听，参数不一致时 @{(text, start, before, count)->model.onNameChanged(text)}
+            绑定监听，参数一致时 @{model::onPwdChanged}
+            逻辑判断 @{(model.p.isEmpty()||model.n.isEmpty()) ? false : true}
+        -->
+        <EditText
+            android:id="@+id/et_account"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="text"
+            android:onTextChanged="@{(text, start, before, count)->model.onNameChanged(text)}"
+            android:text="@{model.n}"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
+        <EditText
+            android:id="@+id/et_pwd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPassword"
+            android:onTextChanged="@{model::onPwdChanged}"
+            android:text="@{model.p}"
+            app:layout_constraintBottom_toTopOf="@+id/bt"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/et_account" />
+
+        <Button
+            android:id="@+id/bt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:enabled="@{(model.p.isEmpty()||model.n.isEmpty()) ? false : true}"
+            android:onClick="@{() -> model.login()}"
+            android:text="Login"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/et_pwd" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="@{model.n + model.p}"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/et_pwd" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
